@@ -16,5 +16,9 @@
         <span th:if="${ingredient.unitOfMeasure}" th:text="${ingredient.unitOfMeasure.name}"></span>
         <span th:text="${ingredient.description}"></span>
     </div>
+    <h3>Directions</h3>
+    <div th:text="${recipe.directions}"></div>
+    <h3>Notes</h3>
+    <div th:text="${recipe.notes}"></div>
 </body>
 </html>

@@ -94,9 +94,6 @@ public class DataLoader implements CommandLineRunner {
         recipe.setUrl(url);
         recipe.setDirections(directions);
         recipe.setDifficulty(difficulty);
-        ingredients.forEach(i -> {
-            i.setRecipe(recipe);
-        });
         recipe.setIngredients(ingredients);
         recipe.setCategories(categories);
         return recipe;
