@@ -3,24 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <h2>Recipes</h2>
-    <table id="recipes">
-        <thead>
-        <tr>
-            <th style="text-align: left">Name</th>
-            <th style="text-align: left">Prep Time</th>
-            <th style="text-align: left">Cook Time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="recipe : ${recipes}">
-            <td><a th:href="@{/recipes/{id}(id=${recipe.id})}" th:text="${recipe.name}"></a></td>
-            <td th:text="${recipe.prepTime}"></td>
-            <td th:text="${recipe.cookTime}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="container" style="margin-top: 20px">
+        <div class="row">
+            <div class="col-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2>My Recipes</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
+                            <table id="recipes" class="table table-hover">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th style="text-align: left">Name</th>
+                                    <th style="text-align: left">Prep Time</th>
+                                    <th style="text-align: left">Cook Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="recipe : ${recipes}">
+                                    <td><a th:href="@{/recipes/{id}(id=${recipe.id})}" th:text="${recipe.name}"></a></td>
+                                    <td th:text="${recipe.prepTime}"></td>
+                                    <td th:text="${recipe.cookTime}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
