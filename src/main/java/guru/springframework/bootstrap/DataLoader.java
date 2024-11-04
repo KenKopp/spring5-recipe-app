@@ -3,6 +3,7 @@ package guru.springframework.bootstrap;
 import guru.springframework.domain.Category;
 import guru.springframework.domain.Difficulty;
 import guru.springframework.domain.Ingredient;
+import guru.springframework.domain.Notes;
 import guru.springframework.domain.Recipe;
 import guru.springframework.domain.UnitOfMeasure;
 import guru.springframework.repositories.CategoryRepository;
@@ -36,6 +37,8 @@ public class DataLoader implements CommandLineRunner {
         log.debug("DataLoader.run");
         Category mexican = categoryRepository.findByName("Mexican")
             .orElseThrow(() -> new RuntimeException("Mexican not found"));
+        Category fastFood = categoryRepository.findByName("Fast Food")
+            .orElseThrow(() -> new RuntimeException("Fast Food not found"));
 
         UnitOfMeasure teaspoon = unitOfMeasureRepository.findByName("Teaspoon")
             .orElseThrow(() -> new RuntimeException("Teaspoon not found"));
@@ -50,6 +53,7 @@ public class DataLoader implements CommandLineRunner {
             "Perfect Guacamole",
             10,
             0,
+            4,
             "SimplyRecipes",
             "https://www.simplyrecipes.com/recipes/perfect_guacamole",
             "Directions for making guacamole",
@@ -65,13 +69,15 @@ public class DataLoader implements CommandLineRunner {
                 createIngredient("ripe tomato, chopped (optional)", BigDecimal.valueOf(0.5), null),
                 createIngredient("Red radish or jicama slices for garnish (optional)", null, null),
                 createIngredient("Tortilla chips (to serve)", null, null)),
-            Set.of(mexican));
+            Set.of(mexican),
+            "Guacamole notes");
         recipeRepository.save(guacamole);
 
         Recipe tacos = createRecipe(
             "Easy Chicken Tacos",
             10,
             10,
+            6,
             "SimplyRecipes",
             "https://www.simplyrecipes.com/ground-chicken-taco-recipe-8639156",
             "Directions for making easy chicken tacos",
@@ -84,23 +90,29 @@ public class DataLoader implements CommandLineRunner {
                 createIngredient("(14.5-ounce) can diced tomatoes", BigDecimal.valueOf(1), null),
                 createIngredient("Fresh lime juice to finish, optional", null, null),
                 createIngredient("Tortillas, for serving", null, null)),
-            Set.of(mexican));
+            Set.of(mexican, fastFood),
+            "Taco notes");
         recipeRepository.save(tacos);
     }
 
-    private Recipe createRecipe(String name, Integer prepTime, Integer cookTime, String source, String url,
-                                String directions, Difficulty difficulty, Set<Ingredient> ingredients,
-                                Set<Category> categories) {
+    private Recipe createRecipe(String name, Integer prepTime, Integer cookTime, Integer servings,
+                                String source, String url, String directions, Difficulty difficulty,
+                                Set<Ingredient> ingredients, Set<Category> categories, String notesText) {
         Recipe recipe = new Recipe();
         recipe.setName(name);
         recipe.setPrepTime(prepTime);
         recipe.setCookTime(cookTime);
+        recipe.setServings(servings);
         recipe.setSource(source);
         recipe.setUrl(url);
         recipe.setDirections(directions);
         recipe.setDifficulty(difficulty);
         recipe.setIngredients(ingredients);
         recipe.setCategories(categories);
+        Notes notes = new Notes();
+        notes.setNotes(notesText);
+        notes.setRecipe(recipe);
+        recipe.setNotes(notes);
         return recipe;
     }
 
