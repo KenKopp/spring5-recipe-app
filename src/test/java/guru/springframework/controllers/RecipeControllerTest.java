@@ -36,13 +36,13 @@ public class RecipeControllerTest {
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
-        when(recipeService.getRecipe(anyLong())).thenReturn(recipe);
+        when(recipeService.get(anyLong())).thenReturn(recipe);
 
         mockMvc.perform(get("/recipes/1"))
             .andExpect(status().isOk())
             .andExpect(view().name("recipe"))
             .andExpect(model().attributeExists("recipe"));
 
-        verify(recipeService).getRecipe(1L);
+        verify(recipeService).get(1L);
     }
 }

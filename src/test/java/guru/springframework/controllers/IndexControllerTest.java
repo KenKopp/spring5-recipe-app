@@ -48,14 +48,14 @@ public class IndexControllerTest {
     @Test
     public void getIndexPage() {
         Set<Recipe> recipes = Set.of(new Recipe());
-        when(recipeService.getRecipes()).thenReturn(recipes);
+        when(recipeService.getAll()).thenReturn(recipes);
 
         ArgumentCaptor<Set<Recipe>> recipeCaptor = ArgumentCaptor.forClass(Set.class);
 
         String result = controller.getIndexPage(model);
 
         assertThat(result).isEqualTo("index");
-        verify(recipeService, times(1)).getRecipes();
+        verify(recipeService, times(1)).getAll();
         verify(model, times(1)).addAttribute(eq("recipes"), recipeCaptor.capture());
         assertThat(recipeCaptor.getValue()).isEqualTo(recipes);
     }

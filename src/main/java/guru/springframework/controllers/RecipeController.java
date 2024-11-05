@@ -20,7 +20,7 @@ public class RecipeController {
     @RequestMapping("/{id}")
     public String getRecipe(@PathVariable Long id, Model model) {
         log.debug("RecipeController.getRecipe");
-        model.addAttribute("recipe", recipeService.getRecipe(id));
+        model.addAttribute("recipe", recipeService.get(id));
         return "recipe";
     }
 }
