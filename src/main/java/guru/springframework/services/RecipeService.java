@@ -37,4 +37,8 @@ public class RecipeService {
     public RecipeCommand save(RecipeCommand command) {
         return recipeToRecipeCommand.convert(recipeRepository.save(recipeCommandToRecipe.convert(command)));
     }
+
+    public void delete(Long id) {
+        recipeRepository.deleteById(id);
+    }
 }

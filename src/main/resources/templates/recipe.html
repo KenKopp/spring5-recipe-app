@@ -8,6 +8,7 @@
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -17,6 +18,7 @@
                         <h2 class="panel-title" th:text="${recipe.name}"></h2>
                     </div>
                     <div class="panel-body">
+                        <a th:href="@{'/recipes/edit/' + ${recipe.id}}">Edit</a>
                         <div class="row">
                             <div class="col-md-2">Categories:</div>
                             <div class="col-md-10">

@@ -16,6 +16,7 @@
                         <h2>My Recipes</h2>
                     </div>
                     <div class="panel-body">
+                        <a th:href="@{/recipes/edit}">Create New</a>
                         <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
                             <table id="recipes" class="table table-hover">
                                 <thead class="thead-inverse">
@@ -23,6 +24,7 @@
                                     <th style="text-align: left">Name</th>
                                     <th style="text-align: left">Prep Time</th>
                                     <th style="text-align: left">Cook Time</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -31,6 +33,7 @@
                                     <td><a th:href="@{'/recipes/' + ${recipe.id}}" th:text="${recipe.name}"></a></td>
                                     <td th:text="${recipe.prepTime}"></td>
                                     <td th:text="${recipe.cookTime}"></td>
+                                    <td><a th:href="@{'/recipes/delete/' + ${recipe.id}}">Delete</a></td>
                                 </tr>
                                 </tbody>
                             </table>

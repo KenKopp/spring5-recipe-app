@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.services.RecipeService;
 import org.junit.Before;
@@ -21,12 +22,15 @@ public class RecipeControllerTest {
     @Mock
     RecipeService recipeService;
 
+    @Mock
+    private RecipeToRecipeCommand recipeToRecipeCommand;
+
     RecipeController recipeController;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeController = new RecipeController(recipeService);
+        recipeController = new RecipeController(recipeService, recipeToRecipeCommand);
     }
 
     @Test
