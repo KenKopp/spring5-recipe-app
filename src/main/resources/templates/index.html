@@ -16,7 +16,7 @@
                         <h2>My Recipes</h2>
                     </div>
                     <div class="panel-body">
-                        <a th:href="@{/recipes/edit}">Create New</a>
+                        <a class="btn btn-default" th:href="@{/recipes/edit}" role="button">Create New</a>
                         <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
                             <table id="recipes" class="table table-hover">
                                 <thead class="thead-inverse">

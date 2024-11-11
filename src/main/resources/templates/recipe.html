@@ -18,7 +18,8 @@
                         <h2 class="panel-title" th:text="${recipe.name}"></h2>
                     </div>
                     <div class="panel-body">
-                        <a th:href="@{'/recipes/edit/' + ${recipe.id}}">Edit</a>
+                        <a class="btn btn-default" th:href="@{'/recipes/edit/' + ${recipe.id}}" role="button">Edit</a>
+                        <a class="btn btn-default" href="/" role="button">Back</a>
                         <div class="row">
                             <div class="col-md-2">Categories:</div>
                             <div class="col-md-10">

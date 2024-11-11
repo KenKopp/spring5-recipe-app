@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
@@ -39,7 +40,7 @@ public class RecipeServiceTest {
     public void getRecipes() {
         when(recipeRepository.findAll()).thenReturn(Set.of(new Recipe()));
 
-        Set<Recipe> recipes = recipeService.getAll();
+        Set<RecipeCommand> recipes = recipeService.getAll();
 
         assertThat(recipes.size()).isEqualTo(1);
         verify(recipeRepository, times(1)).findAll();

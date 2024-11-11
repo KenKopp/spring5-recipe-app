@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.services.RecipeService;
 import org.junit.Before;
@@ -47,7 +48,7 @@ public class IndexControllerTest {
 
     @Test
     public void getIndexPage() {
-        Set<Recipe> recipes = Set.of(new Recipe());
+        Set<RecipeCommand> recipes = Set.of(new RecipeCommand());
         when(recipeService.getAll()).thenReturn(recipes);
 
         ArgumentCaptor<Set<Recipe>> recipeCaptor = ArgumentCaptor.forClass(Set.class);

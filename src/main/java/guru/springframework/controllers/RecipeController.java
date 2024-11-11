@@ -1,12 +1,10 @@
 package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
-import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class RecipeController {
     private final RecipeService recipeService;
-    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-    public RecipeController(RecipeService recipeService, RecipeToRecipeCommand recipeToRecipeCommand) {
+    public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
-        this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
     @GetMapping
@@ -45,7 +41,7 @@ public class RecipeController {
     @RequestMapping("/edit/{id}")
     public String editExisting(@PathVariable Long id, Model model) {
         log.debug("RecipeController.editExisting");
-        model.addAttribute("recipe", recipeToRecipeCommand.convert(recipeService.get(id)));
+        model.addAttribute("recipe", recipeService.get(id));
         return "recipe-edit";
     }
 

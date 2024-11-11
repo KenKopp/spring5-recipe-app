@@ -3,7 +3,6 @@ package guru.springframework.services;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
-import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +22,14 @@ public class RecipeService {
         this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
-    public Set<Recipe> getAll() {
-        Set<Recipe> recipes = new HashSet<>();
-        recipeRepository.findAll().forEach(recipes::add);
+    public Set<RecipeCommand> getAll() {
+        Set<RecipeCommand> recipes = new HashSet<>();
+        recipeRepository.findAll().forEach(r -> recipes.add(recipeToRecipeCommand.convert(r)));
         return recipes;
     }
 
-    public Recipe get(Long id) {
-        return recipeRepository.findById(id)
+    public RecipeCommand get(Long id) {
+        return recipeRepository.findById(id).map(recipeToRecipeCommand::convert)
             .orElseThrow(() -> new IllegalArgumentException("Recipe not found"));
     }
 

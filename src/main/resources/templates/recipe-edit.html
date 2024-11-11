@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Recipe Form</title>
+    <title>Edit Recipe</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
     <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
@@ -12,7 +12,7 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:object="${recipe}" th:action="@{/recipes}"  method="post">
+            <form th:object="${recipe}" th:action="@{/recipes}" method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
@@ -93,13 +93,29 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <ul>
-                                        <li th:each="ingredient : ${recipe.ingredients}">
-                                            <span th:if="${ingredient.amount}" th:text="${ingredient.amount}"></span>
-                                            <span th:if="${ingredient.unitOfMeasure}" th:text="${ingredient.unitOfMeasure.name}"></span>
-                                            <span th:text="${ingredient.description}"></span>
-                                        </li>
-                                    </ul>
+                                    <a class="btn btn-default" th:href="@{'/ingredients/edit?recipeId=' + ${recipe.id}}">Create New</a>
+                                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipe.ingredients)}">
+                                        <table id="ingredients" class="table table-hover">
+                                            <thead class="thead-inverse">
+                                            <tr>
+                                                <th style="text-align: left">Ingredient</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="ingredient : ${recipe.ingredients}">
+                                                <td>
+                                                    <span th:if="${ingredient.amount}" th:text="${ingredient.amount}"></span>
+                                                    <span th:if="${ingredient.unitOfMeasure}" th:text="${ingredient.unitOfMeasure.name}"></span>
+                                                    <span th:text="${ingredient.description}"></span>
+                                                </td>
+                                                <td><a th:href="@{'/ingredients/edit/' + ${ingredient.id}}">Edit</a></td>
+                                                <td><a th:href="@{'/ingredients/delete/' + ${ingredient.id}}">Delete</a></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +143,9 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a th:if="${recipe.id}" class="btn btn-default" th:href="@{'/recipes/' + ${recipe.id}}" role="button">Cancel</a>
+                    <a th:unless="${recipe.id}" class="btn btn-default" href="/" role="button">Cancel</a>
                 </div>
             </form>
         </div>
