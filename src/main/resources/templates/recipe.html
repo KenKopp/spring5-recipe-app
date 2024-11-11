@@ -19,7 +19,14 @@
                     </div>
                     <div class="panel-body">
                         <a class="btn btn-default" th:href="@{'/recipes/edit/' + ${recipe.id}}" role="button">Edit</a>
+                        <a class="btn btn-default" th:href="@{'/recipes/image/edit/' + ${recipe.id}}" role="button">Change Image</a>
                         <a class="btn btn-default" href="/" role="button">Back</a>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img th:src="@{'/recipes/image/' + ${recipe.id}}"
+                                     width="200" height="200">
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-2">Categories:</div>
                             <div class="col-md-10">
