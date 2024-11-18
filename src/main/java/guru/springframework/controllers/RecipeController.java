@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,10 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/recipes")
 @Slf4j
 public class RecipeController {
+    private static final String RECIPE_EDIT_VIEW = "recipe-edit";
+
     private final RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
@@ -39,7 +44,7 @@ public class RecipeController {
     public String editNew(Model model) {
         log.debug("RecipeController.editNew");
         model.addAttribute("recipe", new RecipeCommand());
-        return "recipe-edit";
+        return RECIPE_EDIT_VIEW;
     }
 
     @GetMapping
@@ -47,13 +52,19 @@ public class RecipeController {
     public String editExisting(@PathVariable Long id, Model model) {
         log.debug("RecipeController.editExisting");
         model.addAttribute("recipe", recipeService.get(id));
-        return "recipe-edit";
+        return RECIPE_EDIT_VIEW;
     }
 
     @PostMapping
     @RequestMapping("")
-    public String save(@ModelAttribute RecipeCommand command) {
+    public String save(@Valid @ModelAttribute("recipe") RecipeCommand command, BindingResult bindingResult) {
         log.debug("RecipeController.save");
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> {
+                log.debug(error.toString());
+            });
+            return RECIPE_EDIT_VIEW;
+        }
         RecipeCommand saved = recipeService.save(command);
         return String.format("redirect:/recipes/%s", saved.getId());
     }
