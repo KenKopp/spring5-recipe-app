@@ -1,15 +1,20 @@
 package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/recipes")
@@ -23,9 +28,9 @@ public class RecipeController {
 
     @GetMapping
     @RequestMapping("/{id}")
-    public String get(@PathVariable Long id, Model model) {
+    public String get(@PathVariable String id, Model model) {
         log.debug("RecipeController.get");
-        model.addAttribute("recipe", recipeService.get(id));
+        model.addAttribute("recipe", recipeService.get(Long.parseLong(id)));
         return "recipe";
     }
 
@@ -59,5 +64,15 @@ public class RecipeController {
         log.debug("RecipeController.delete");
         recipeService.delete(id);
         return "redirect:/";
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView handleNotFound(Exception ex) {
+        log.error("Handling not found exception", ex);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404error");
+        modelAndView.addObject("exception", ex);
+        return modelAndView;
     }
 }

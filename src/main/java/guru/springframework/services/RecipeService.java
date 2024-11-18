@@ -3,6 +3,7 @@ package guru.springframework.services;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class RecipeService {
 
     public RecipeCommand get(Long id) {
         return recipeRepository.findById(id).map(recipeToRecipeCommand::convert)
-            .orElseThrow(() -> new IllegalArgumentException("Recipe not found"));
+            .orElseThrow(() -> new NotFoundException(String.format("Recipe ID %s not found", id)));
     }
 
     public RecipeCommand save(RecipeCommand command) {
