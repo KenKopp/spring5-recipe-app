@@ -10,16 +10,18 @@ import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Set;
 
 @Component
 @Slf4j
-public class DataLoader implements CommandLineRunner {
+@Profile("default")
+public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
@@ -32,8 +34,11 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
-    @Transactional
-    public void run(String... args) throws Exception {
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        loadRecipes();
+    }
+
+    private void loadRecipes() {
         log.debug("DataLoader.run");
         Category mexican = categoryRepository.findByName("Mexican")
             .orElseThrow(() -> new RuntimeException("Mexican not found"));
