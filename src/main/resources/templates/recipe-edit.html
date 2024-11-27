@@ -133,8 +133,8 @@
                                                     <span th:if="${ingredient.unitOfMeasure}" th:text="${ingredient.unitOfMeasure.name}"></span>
                                                     <span th:text="${ingredient.description}"></span>
                                                 </td>
-                                                <td><a th:href="@{'/ingredients/edit/' + ${ingredient.id}}">Edit</a></td>
-                                                <td><a th:href="@{'/ingredients/delete/' + ${ingredient.id}}">Delete</a></td>
+                                                <td><a th:href="@{'/ingredients/edit/' + ${recipe.id} + '/' + ${ingredient.id}}">Edit</a></td>
+                                                <td><a th:href="@{'/ingredients/delete/' + ${recipe.id} + '/' + ${ingredient.id}}">Delete</a></td>
                                             </tr>
                                             </tbody>
                                         </table>

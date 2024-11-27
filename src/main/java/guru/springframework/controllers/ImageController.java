@@ -31,14 +31,14 @@ public class ImageController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showUploadForm(@PathVariable Long id, Model model) {
+    public String showUploadForm(@PathVariable String id, Model model) {
         log.debug("ImageController.showUploadForm");
         model.addAttribute("recipe", recipeService.get(id));
         return "image-upload";
     }
 
     @GetMapping("/{id}")
-    public void showImage(@PathVariable Long id, HttpServletResponse response) throws IOException {
+    public void showImage(@PathVariable String id, HttpServletResponse response) throws IOException {
         byte[] bytes = imageService.getImage(id);
         if (bytes != null) {
             response.setContentType("image/jpeg");
@@ -48,7 +48,7 @@ public class ImageController {
     }
 
     @PostMapping("/{id}")
-    public String saveImageFile(@PathVariable Long id, @RequestParam("imagefile")MultipartFile file)
+    public String saveImageFile(@PathVariable String id, @RequestParam("imagefile")MultipartFile file)
         throws IOException {
         log.debug("ImageController.saveImageFile");
         imageService.saveImageFile(id, file);

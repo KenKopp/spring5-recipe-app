@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,32 +36,23 @@ public class RecipeControllerTest {
     @Test
     public void getRecipe() throws Exception {
         RecipeCommand recipe = new RecipeCommand();
-        recipe.setId(1L);
-        when(recipeService.get(anyLong())).thenReturn(recipe);
+        recipe.setId("1");
+        when(recipeService.get(anyString())).thenReturn(recipe);
 
         mockMvc.perform(get("/recipes/1"))
             .andExpect(status().isOk())
             .andExpect(view().name("recipe"))
             .andExpect(model().attributeExists("recipe"));
 
-        verify(recipeService).get(1L);
+        verify(recipeService).get("1");
     }
 
     @Test
     public void getRecipeNotFoundException() throws Exception {
-        when(recipeService.get(anyLong())).thenThrow(new NotFoundException());
+        when(recipeService.get(anyString())).thenThrow(new NotFoundException());
 
         mockMvc.perform(get("/recipes/1"))
             .andExpect(status().isNotFound())
             .andExpect(view().name("404error"));
-    }
-
-    @Test
-    public void getRecipeNumberFormatException() throws Exception {
-        when(recipeService.get(anyLong())).thenThrow(new NotFoundException());
-
-        mockMvc.perform(get("/recipes/x"))
-            .andExpect(status().isBadRequest())
-            .andExpect(view().name("400error"));
     }
 }

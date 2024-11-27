@@ -40,19 +40,18 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private void loadRecipes() {
         log.debug("DataLoader.run");
-        Category mexican = categoryRepository.findByName("Mexican")
-            .orElseThrow(() -> new RuntimeException("Mexican not found"));
-        Category fastFood = categoryRepository.findByName("Fast Food")
-            .orElseThrow(() -> new RuntimeException("Fast Food not found"));
 
-        UnitOfMeasure teaspoon = unitOfMeasureRepository.findByName("Teaspoon")
-            .orElseThrow(() -> new RuntimeException("Teaspoon not found"));
-        UnitOfMeasure tablespoon = unitOfMeasureRepository.findByName("Tablespoon")
-            .orElseThrow(() -> new RuntimeException("Tablespoon not found"));
-        UnitOfMeasure pound = unitOfMeasureRepository.findByName("Pound")
-            .orElseThrow(() -> new RuntimeException("Pound not found"));
-        UnitOfMeasure pinch = unitOfMeasureRepository.findByName("Pinch")
-            .orElseThrow(() -> new RuntimeException("Pinch not found"));
+        Category american = categoryRepository.save(createCategory("American"));
+        Category italian = categoryRepository.save(createCategory("Italian"));
+        Category mexican = categoryRepository.save(createCategory("Mexican"));
+        Category fastFood = categoryRepository.save(createCategory("Fast Food"));
+
+        UnitOfMeasure teaspoon = unitOfMeasureRepository.save(createUnitOfMeasure("Teaspoon"));
+        UnitOfMeasure tablespoon = unitOfMeasureRepository.save(createUnitOfMeasure("Tablespoon"));
+        UnitOfMeasure cup = unitOfMeasureRepository.save(createUnitOfMeasure("Cup"));
+        UnitOfMeasure pinch = unitOfMeasureRepository.save(createUnitOfMeasure("Pinch"));
+        UnitOfMeasure ounce = unitOfMeasureRepository.save(createUnitOfMeasure("Ounce"));
+        UnitOfMeasure pound = unitOfMeasureRepository.save(createUnitOfMeasure("Pound"));
 
         Recipe guacamole = createRecipe(
             "Perfect Guacamole",
@@ -100,6 +99,18 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         recipeRepository.save(tacos);
     }
 
+    private Category createCategory(String name) {
+        Category category = new Category();
+        category.setName(name);
+        return category;
+    }
+
+    private UnitOfMeasure createUnitOfMeasure(String name) {
+        UnitOfMeasure unitOfMeasure = new UnitOfMeasure();
+        unitOfMeasure.setName(name);
+        return unitOfMeasure;
+    }
+
     private Recipe createRecipe(String name, Integer prepTime, Integer cookTime, Integer servings,
                                 String source, String url, String directions, Difficulty difficulty,
                                 Set<Ingredient> ingredients, Set<Category> categories, String notesText) {
@@ -116,7 +127,6 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         recipe.setCategories(categories);
         Notes notes = new Notes();
         notes.setNotes(notesText);
-        notes.setRecipe(recipe);
         recipe.setNotes(notes);
         return recipe;
     }

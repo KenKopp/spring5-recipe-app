@@ -27,7 +27,7 @@ public class IngredientController {
 
     @GetMapping
     @RequestMapping("/edit")
-    public String editNew(@RequestParam("recipeId") Long recipeId, Model model) {
+    public String editNew(@RequestParam("recipeId") String recipeId, Model model) {
         log.debug("IngredientController.editNew");
         IngredientCommand command = new IngredientCommand();
         command.setRecipeId(recipeId);
@@ -37,10 +37,10 @@ public class IngredientController {
     }
 
     @GetMapping
-    @RequestMapping("/edit/{id}")
-    public String editExisting(@PathVariable Long id, Model model) {
+    @RequestMapping("/edit/{recipeId}/{id}")
+    public String editExisting(@PathVariable String recipeId, @PathVariable String id, Model model) {
         log.debug("IngredientController.editExisting");
-        model.addAttribute("ingredient", ingredientService.get(id));
+        model.addAttribute("ingredient", ingredientService.get(recipeId, id));
         model.addAttribute("unitOfMeasures", unitOfMeasureService.getAll());
         return "ingredient-edit";
     }
@@ -54,11 +54,11 @@ public class IngredientController {
     }
 
     @GetMapping
-    @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    @RequestMapping("/delete/{recipeId}/{id}")
+    public String delete(@PathVariable String recipeId, @PathVariable String id) {
         log.debug("IngredientController.delete");
-        IngredientCommand ingredient = ingredientService.get(id);
-        ingredientService.delete(id);
+        IngredientCommand ingredient = ingredientService.get(recipeId, id);
+        ingredientService.delete(recipeId, id);
         return String.format("redirect:/recipes/edit/%s", ingredient.getRecipeId());
     }
 }

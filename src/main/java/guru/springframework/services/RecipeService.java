@@ -29,7 +29,7 @@ public class RecipeService {
         return recipes;
     }
 
-    public RecipeCommand get(Long id) {
+    public RecipeCommand get(String id) {
         return recipeRepository.findById(id).map(recipeToRecipeCommand::convert)
             .orElseThrow(() -> new NotFoundException(String.format("Recipe ID %s not found", id)));
     }
@@ -38,7 +38,7 @@ public class RecipeService {
         return recipeToRecipeCommand.convert(recipeRepository.save(recipeCommandToRecipe.convert(command)));
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         recipeRepository.deleteById(id);
     }
 }

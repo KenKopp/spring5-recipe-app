@@ -15,7 +15,7 @@ public class ImageService {
         this.recipeRepository = recipeRepository;
     }
 
-    public byte[] getImage(Long id) {
+    public byte[] getImage(String id) {
         Recipe recipe = recipeRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Recipe not found"));
         byte[] bytes = null;
@@ -29,7 +29,7 @@ public class ImageService {
         return bytes;
     }
 
-    public void saveImageFile(Long id, MultipartFile file) throws IOException {
+    public void saveImageFile(String id, MultipartFile file) throws IOException {
         Recipe recipe = recipeRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Recipe not found"));
 
